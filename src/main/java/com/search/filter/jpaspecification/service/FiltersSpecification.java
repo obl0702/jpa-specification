@@ -10,6 +10,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -39,6 +40,11 @@ public class FiltersSpecification<T> {
                     case LIKE:
                         Predicate like = criteriaBuilder.like(root.get(requestDto.getColumn()), "%"+requestDto.getValue()+"%");
                         predicates.add(like);
+                        break;
+                    case IN:
+                        String [] split = requestDto.getValue().split(",");
+                        Predicate in = root.get(requestDto.getColumn()).in(Arrays.asList(split));
+                        predicates.add(in);
                         break;
                     default:
                         throw new IllegalStateException("Unexpected value: " + "");
