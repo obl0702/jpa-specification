@@ -56,10 +56,16 @@ public class FilterController {
 
     /* Example:
     {
-        "searchRequestDto": {
+    "searchRequestDto": [
+        {
             "column": "name",
             "value": "Gaurav"
+        },
+        {
+            "column": "id",
+            "value": "2"
         }
+    ]
     }
     */
     @PostMapping("/specification")
