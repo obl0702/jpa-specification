@@ -56,6 +56,7 @@ public class FilterController {
 
     /* Example:
     {
+    "globalOperator": "OR",
     "searchRequestDto": [
         {
             "column": "name",
@@ -70,7 +71,8 @@ public class FilterController {
     */
     @PostMapping("/specification")
     public List<Student> getStudents(@RequestBody RequestDto requestDto){
-        Specification<Student> searchSpecification = studentFiltersSpecification.getSearchSpecification(requestDto.getSearchRequestDto());
+        Specification<Student> searchSpecification = studentFiltersSpecification
+                .getSearchSpecification(requestDto.getSearchRequestDto(), requestDto.getGlobalOperator());
         return studentRepository.findAll(searchSpecification);
     }
 }

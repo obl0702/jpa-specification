@@ -10,4 +10,10 @@ import java.util.List;
 public class RequestDto {
 
     private List<SearchRequestDto> searchRequestDto;
+
+    private GlobalOperator globalOperator;
+
+    public enum GlobalOperator{
+        AND, OR;
+    }
 }

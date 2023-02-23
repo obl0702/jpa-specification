@@ -1,5 +1,6 @@
 package com.search.filter.jpaspecification.service;
 
+import com.search.filter.jpaspecification.dto.RequestDto;
 import com.search.filter.jpaspecification.dto.SearchRequestDto;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -23,7 +24,7 @@ public class FiltersSpecification<T> {
         };
     }
 
-    public Specification<T> getSearchSpecification(List<SearchRequestDto> searchRequestDtos){
+    public Specification<T> getSearchSpecification(List<SearchRequestDto> searchRequestDtos, RequestDto.GlobalOperator globalOperator){
         return (root, query, criteriaBuilder) -> {
 
             List<Predicate> predicates = new ArrayList<>();
@@ -32,7 +33,11 @@ public class FiltersSpecification<T> {
                 Predicate p = criteriaBuilder.equal(root.get(requestDto.getColumn()), requestDto.getValue());
                 predicates.add(p);
             }
-            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+
+            if(globalOperator.equals(RequestDto.GlobalOperator.AND))
+                return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+            else
+                return criteriaBuilder.or(predicates.toArray(new Predicate[0]));
         };
     }
 }
