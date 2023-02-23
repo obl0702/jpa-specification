@@ -30,8 +30,19 @@ public class FiltersSpecification<T> {
             List<Predicate> predicates = new ArrayList<>();
 
             for(SearchRequestDto requestDto : searchRequestDtos){
-                Predicate p = criteriaBuilder.equal(root.get(requestDto.getColumn()), requestDto.getValue());
-                predicates.add(p);
+
+                switch(requestDto.getOperation()){
+                    case EQUAL:
+                        Predicate equal = criteriaBuilder.equal(root.get(requestDto.getColumn()), requestDto.getValue());
+                        predicates.add(equal);
+                        break;
+                    case LIKE:
+                        Predicate like = criteriaBuilder.like(root.get(requestDto.getColumn()), "%"+requestDto.getValue()+"%");
+                        predicates.add(like);
+                        break;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + "");
+                }
             }
 
             if(globalOperator.equals(RequestDto.GlobalOperator.AND))
