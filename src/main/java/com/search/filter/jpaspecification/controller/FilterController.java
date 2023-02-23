@@ -60,11 +60,13 @@ public class FilterController {
     "searchRequestDto": [
         {
             "column": "name",
-            "value": "Gaurav"
+            "value": "Gaurav",
+            "operation": "LIKE"
         },
         {
             "column": "id",
-            "value": "2"
+            "value": "2",
+            "operation": "EQUAL"
         }
     ]
     }
