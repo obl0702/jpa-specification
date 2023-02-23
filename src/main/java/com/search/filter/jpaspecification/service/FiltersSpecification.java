@@ -46,6 +46,14 @@ public class FiltersSpecification<T> {
                         Predicate in = root.get(requestDto.getColumn()).in(Arrays.asList(split));
                         predicates.add(in);
                         break;
+                    case GREATER_THAN:
+                        Predicate greaterThan = criteriaBuilder.greaterThan(root.get(requestDto.getColumn()), requestDto.getValue());
+                        predicates.add(greaterThan);
+                        break;
+                    case LESS_THAN:
+                        Predicate lessThan = criteriaBuilder.lessThan(root.get(requestDto.getColumn()), requestDto.getValue());
+                        predicates.add(lessThan);
+                        break;
                     default:
                         throw new IllegalStateException("Unexpected value: " + "");
                 }
