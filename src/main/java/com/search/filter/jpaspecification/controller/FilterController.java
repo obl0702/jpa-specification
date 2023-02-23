@@ -1,10 +1,13 @@
 package com.search.filter.jpaspecification.controller;
 
 import com.search.filter.jpaspecification.domain.Student;
+import com.search.filter.jpaspecification.dto.PageRequestDto;
 import com.search.filter.jpaspecification.dto.RequestDto;
 import com.search.filter.jpaspecification.repository.StudentRepository;
 import com.search.filter.jpaspecification.service.FiltersSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -37,23 +40,6 @@ public class FilterController {
         return studentRepository.findBySubjectsName(subject);
     }
 
-    /* General Concept
-    @PostMapping("/specification")
-    public List<Student> getStudents(){
-        Specification<Student> specification = new Specification<Student>(){
-
-            @Override
-            public Predicate toPredicate(Root<Student> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                return criteriaBuilder.equal(root.get("name"), "Pratik");
-            }
-        };
-
-        List<Student> all =studentRepository.findAll(specification);
-        return all;
-    }
-     */
-
-
     /* Example:
     {
         "globalOperator": "OR",
@@ -78,5 +64,40 @@ public class FilterController {
         Specification<Student> searchSpecification = studentFiltersSpecification
                 .getSearchSpecification(requestDto.getSearchRequestDto(), requestDto.getGlobalOperator());
         return studentRepository.findAll(searchSpecification);
+    }
+
+    /* Example:
+    {
+        "globalOperator": "OR",
+        "pageRequestDto": {
+            "pageNo":1,
+            "pageSize":2,
+            "sort":"ASC",
+            "sortByColumn":"id"
+        },
+        "searchRequestDto": [
+            {
+                "column": "city",
+                "value": "Nagpur",
+                "operation": "JOIN",
+                "joinTable": "address"
+            },
+            {
+                "column": "id",
+                "value": "3,5",
+                "operation": "BETWEEN",
+                "joinTable": ""
+            }
+        ]
+    }
+     */
+    @PostMapping("/specification/pagination")
+    public Page<Student> getStudentsPage(@RequestBody RequestDto requestDto){
+        Specification<Student> searchSpecification = studentFiltersSpecification
+                .getSearchSpecification(requestDto.getSearchRequestDto(), requestDto.getGlobalOperator());
+
+        Pageable pageable = new PageRequestDto().getPageable(requestDto.getPageRequestDto());
+
+        return studentRepository.findAll(searchSpecification, pageable);
     }
 }

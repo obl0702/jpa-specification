@@ -13,6 +13,8 @@ public class RequestDto {
 
     private GlobalOperator globalOperator;
 
+    private PageRequestDto pageRequestDto;
+
     public enum GlobalOperator{
         AND, OR;
     }
