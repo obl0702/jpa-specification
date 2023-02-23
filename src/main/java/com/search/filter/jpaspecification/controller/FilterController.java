@@ -56,19 +56,21 @@ public class FilterController {
 
     /* Example:
     {
-    "globalOperator": "OR",
-    "searchRequestDto": [
-        {
-            "column": "name",
-            "value": "Gaurav",
-            "operation": "LIKE"
-        },
-        {
-            "column": "id",
-            "value": "2",
-            "operation": "EQUAL"
-        }
-    ]
+        "globalOperator": "OR",
+        "searchRequestDto": [
+            {
+                "column": "city",
+                "value": "Nagpur",
+                "operation": "JOIN",
+                "joinTable": "address"
+            },
+            {
+                "column": "id",
+                "value": "4,5",
+                "operation": "BETWEEN",
+                "joinTable": ""
+            }
+        ]
     }
     */
     @PostMapping("/specification")

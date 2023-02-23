@@ -60,6 +60,12 @@ public class FiltersSpecification<T> {
                                 Long.parseLong(splitBetween[0]), Long.parseLong(splitBetween[1]));
                         predicates.add(between);
                         break;
+                    case JOIN:
+                        Predicate join = criteriaBuilder.equal(
+                                root.join(requestDto.getJoinTable()).get(requestDto.getColumn()),
+                                requestDto.getValue());
+                        predicates.add(join);
+                        break;
                     default:
                         throw new IllegalStateException("Unexpected value: " + "");
                 }
