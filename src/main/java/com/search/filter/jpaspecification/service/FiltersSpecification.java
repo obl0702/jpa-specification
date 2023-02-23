@@ -54,6 +54,12 @@ public class FiltersSpecification<T> {
                         Predicate lessThan = criteriaBuilder.lessThan(root.get(requestDto.getColumn()), requestDto.getValue());
                         predicates.add(lessThan);
                         break;
+                    case BETWEEN:
+                        String [] splitBetween = requestDto.getValue().split(",");
+                        Predicate between = criteriaBuilder.between(root.get(requestDto.getColumn()),
+                                Long.parseLong(splitBetween[0]), Long.parseLong(splitBetween[1]));
+                        predicates.add(between);
+                        break;
                     default:
                         throw new IllegalStateException("Unexpected value: " + "");
                 }
